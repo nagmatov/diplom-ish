@@ -1,0 +1,193 @@
+<%- include('partials/header.ejs') %>
+
+<!--================Single Product Area =================-->
+<div class="product_image_area section_padding">
+  <div class="container">
+    <div class="row s_product_inner justify-content-between">
+      <div class="col-lg-7 col-xl-7">
+        <div class="product_slider_img">
+          <div id="vertical">
+            <div id="sample" data-thumb="/product_img/<%= product.thumbnail %>">
+              <img src="/product_img/<%= product.thumbnail %>" />
+            </div>
+            <% product.images.forEach((element,index) => { %>
+            <div data-thumb="/product_img/<%= element %>">
+              <img src="/product_img/<%= element %>" />
+            </div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-xl-4">
+        <div class="s_product_text">
+          <h5>Oldingi <span>|</span> Keyingi</h5>
+          <h3><%= product.title %></h3>
+          <h2>
+            <%= product.price %> sum
+          </h2>
+          <ul class="list">
+            <li>
+              <a class="active" href="#"> <span>Kateporya</span> : <%= product.category.title %></a>
+            </li>
+            <li>
+              <a href="#"> <span>Mavjudligi</span> : Omborda bor</a>
+            </li>
+          </ul>
+          <p><%= product.description %></p>
+          <div class="card_area d-flex justify-content-between align-items-center">
+            <div class="product_count">
+              <span class="inumber-decrement"> <i class="ti-minus"></i></span>
+              <input class="input-number" type="text" value="1" min="0" max="10" />
+              <span class="number-increment"> <i class="ti-plus"></i></span>
+            </div>
+            <a onclick="cartAdd('<%= product._id %>')" class="btn_3">Savatga qo'shish</a>
+            <!-- <a href="/wishlist" class="like_us"> <i class="ti-heart"></i> </a> -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--================End Single Product Area =================-->
+
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+  <div class="container">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="home-tab"
+          data-toggle="tab"
+          href="#home"
+          role="tab"
+          aria-controls="home"
+          aria-selected="true"
+          >Tavsif</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="profile-tab"
+          data-toggle="tab"
+          href="#profile"
+          role="tab"
+          aria-controls="profile"
+          aria-selected="false"
+          >Mahsulot haqida</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <p><%= product.title %></p>
+        <br /><br />
+        <p>
+          <%= product.description %>
+        </p>
+      </div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>
+                  <h5>kengligi</h5>
+                </td>
+                <td>
+                  <h5><%= product.width %> sm</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Balandligi</h5>
+                </td>
+                <td>
+                  <h5><%= product.height %> sm</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Yon kenglik</h5>
+                </td>
+                <td>
+                  <h5><%= product.breadth %> sm</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Og'irligi</h5>
+                </td>
+                <td>
+                  <h5><%= product.weight %> kg</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Kafolat</h5>
+                </td>
+                <td>
+                  <h5><%= product.warranty %> oy</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Material</h5>
+                </td>
+                <td>
+                  <h5><%= product.material %></h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Product Description Area =================-->
+
+<!-- product_list part start-->
+<section class="product_list best_seller">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="section_tittle text-center">
+          <h2>Eng yaxshi sotuvchilar <span>shop</span></h2>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-center justify-content-between">
+      <div class="col-lg-12">
+        <div class="best_product_slider owl-carousel">
+          <div class="single_product_item">
+            <img src="/user/img/product/product_1.png" alt="" />
+            
+          </div>
+          <div class="single_product_item">
+            <img src="/user/img/product/product_2.png" alt="" />
+            
+          </div>
+          <div class="single_product_item">
+            <img src="/user/img/product/product_3.png" alt="" />
+            
+          </div>
+          <div class="single_product_item">
+            <img src="/user/img/product/product_4.png" alt="" />
+            
+          </div>
+          <div class="single_product_item">
+            <img src="/user/img/product/product_5.png" alt="" />
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- product_list part end-->
+
+<%- include('partials/footer.ejs') %>

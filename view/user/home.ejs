@@ -1,0 +1,346 @@
+<%- include('partials/header.ejs') %> <% if (banner.length>0) { %>
+
+<!-- banner part start-->
+<section class="banner_part">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <div class="banner_slider owl-carousel">
+          <% banner.forEach(el => { %>
+          <div class="single_banner_slider">
+            <div class="row">
+              <div class="col-lg-5 col-md-12">
+                <div class="banner_text">
+                  <div class="banner_text_iner">
+                    <h1><%= el.title %></h1>
+                    <p><%= el.description %></p>
+                    <a href="<%= el.url  %>" class="btn_2">Sotib olish</a>
+                  </div>
+                </div>
+              </div>
+              <div class="banner_img d-lg-block">
+                <a href="<%= el.url  %>">
+                  <img src="/banner_img/<%= el.image  %> " alt="" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <!-- <div class="slider-counter"></div> -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- banner part start-->
+
+<% } %>
+<!-- feature_part start-->
+<section class="feature_part padding_top">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="section_tittle text-center">
+          <h2>Tavsiya etilgan turkum</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-center justify-content-between">
+      <div class="col-lg-7 col-sm-6">
+        <div class="single_feature_post_text">
+          <a href="/shop" class="feature_btn">Sotib olish <i class="fas fa-play"></i></a>
+          <a href="/shop">
+            <img src="/user/img/feature/feature_1.png" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 col-sm-6">
+        <div class="single_feature_post_text">
+          <a href="/shop" class="feature_btn">Sotib olish <i class="fas fa-play"></i></a>
+          <a href="/shop">
+            <img src="/user/img/feature/feature_2.png" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 col-sm-6">
+        <div class="single_feature_post_text">
+          <a href="/shop" class="feature_btn">Sotib olish <i class="fas fa-play"></i></a>
+          <a href="/shop">
+            <img src="/user/img/feature/feature_3.png" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-7 col-sm-6">
+        <div class="single_feature_post_text">
+          <a href="/shop" class="feature_btn">Sotib olish <i class="fas fa-play"></i></a>
+          <a href="/shop">
+            <img src="/user/img/feature/feature_4.png" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- upcoming_event part start-->
+
+<!-- product_list start-->
+<section class="product_list section_padding">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="section_tittle text-center">
+          <h2>Ommabop <span>shop</span></h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="product_list_slider owl-carousel">
+          <div class="single_product_list_slider">
+            <div class="row align-items-center justify-content-between">
+              <% product.forEach((element,index) => { %>
+              <div class="col-lg-3 col-sm-6">
+                <div class="single_product_item">
+                  <a href="/product-details/<%= element._id %> ">
+                    <img src="/product_img/<%= element.thumbnail %> " alt="" />
+                  </a>
+                  <div class="single_product_text">
+                    <h4><%= element.title %></h4>
+                    <h3>
+                      <%= element.price %> sum
+                    </h3>
+                    <a onclick="cartAdd('<%= element._id %>')" class="add_cart">+ Savatchaga qo'shish</a>
+
+                    <% if (user) { %> <% if (wishlistProducts.products.some(el => el.product.equals(element._id))) { %>
+                    <a id="heart_symbol<%= index %>" onclick="updateWish('<%= element._id %>','<%= index %>')"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart-fill"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                          /></svg></i
+                    ></a>
+                    <% }else{ %>
+                    <a id="heart_symbol<%= index %>" onclick="updateWish('<%= element._id %>','<%= index %>')"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                          /></svg></i
+                    ></a>
+                    <% } %> <% }else{ %>
+                    <a href="/signin"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                          /></svg></i
+                    ></a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+          <div class="single_product_list_slider">
+            <div class="row align-items-center justify-content-between">
+              <% product.forEach((element,index) => { %>
+              <div class="col-lg-3 col-sm-6">
+                <div class="single_product_item">
+                  <a href="/product-details/<%= element._id %> ">
+                    <img src="/product_img/<%= element.thumbnail %> " alt="" />
+                  </a>
+                  <div class="single_product_text">
+                    <h4><%= element.title %></h4>
+                    <h3>
+                      <%= element.price %> sum
+                    </h3>
+                    <a onclick="cartAdd('<%= element._id %>')" class="add_cart">+ add to cart</a>
+
+                    <% if (user) { %> <% if (wishlistProducts.products.some(el => el.product.equals(element._id))) { %>
+                    <a id="heart_symbol<%= index %>" onclick="updateWish('<%= element._id %>','<%= index %>')"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart-fill"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                          /></svg></i
+                    ></a>
+                    <% }else{ %>
+                    <a id="heart_symbol<%= index %>" onclick="updateWish('<%= element._id %>','<%= index %>')"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                          /></svg></i
+                    ></a>
+                    <% } %> <% }else{ %>
+                    <a href="/signin"
+                      ><i
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-heart"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                          /></svg></i
+                    ></a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- product_list part start-->
+
+<!-- awesome_shop start-->
+<section class="our_offer section_padding">
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-lg-6 col-md-6">
+        <div class="offer_img">
+          <a href="/product-details">
+            <img src="/user/img/offer_img.png" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="offer_text">
+          <h2>Barcha mahsulotlarga haftalik 60% chegirma</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- awesome_shop part start-->
+
+<!-- product_list part start-->
+<section class="product_list best_seller section_padding">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="section_tittle text-center">
+          <h2>Eng zo'rlari <span>shop</span></h2>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-center justify-content-between">
+      <div class="col-lg-12">
+        <div class="best_product_slider owl-carousel">
+          <% product.forEach((element,index) => { %> 
+            <% if (index<8) { %>
+          <div class="single_product_item">
+            <a href="/product-details/<%= element._id %> ">
+              <img src="/product_img/<%= element.thumbnail %> " alt="" />
+            </a>
+
+            <div class="single_product_text">
+              <h4><%= element.title %> </h4>
+              <h3><%= element.price %> sum</h3>
+            </div>
+          </div>
+          <% } %>
+           <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- product_list part end-->
+
+<!-- subscribe_area part start-->
+<section class="subscribe_area section_padding">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <form id="submit-form" role="form"
+      >
+        <div class="subscribe_area_text text-center">
+          <h5>Join Our Newsletter</h5>
+          <h2>Yangi takliflardan xabardor bo'lish uchun obuna bo'ling</h2>
+          <div class="d-flex justify-content-between">
+            <i class="fab fa-instagram fa-3x"></i>
+            <i class="fab fa-telegram fa-3x"></i>
+            <i class="fab fa-youtube fa-3x"></i>
+            <i class="fab fa-facebook fa-3x"></i>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!--::subscribe_area part end::-->
+
+<!-- subscribe_area part start-->
+<section class="client_logo padding_top">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <% brands.forEach((e,i) => { %>
+            <div class="single_client_logo">
+              <a href="/shop/brand/<%= e._id %>"><img src="/brand_img/<%= e.image %> " alt="..." width="120p"/></a>
+            </div>
+          <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+<!--::subscribe_area part end::-->
+
+<script src="/user/js/subscription.js" defer></script>
+<% if (msg.length>0) { %>
+<script defer>
+  customAlert('<%= msg %>', 'success');
+</script>
+<% } %>
+
+
+<%- include('partials/footer.ejs') %> 
+

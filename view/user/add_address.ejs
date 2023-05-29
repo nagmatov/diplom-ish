@@ -1,0 +1,176 @@
+<%- include('partials/header.ejs') %>
+<style>
+  #map {
+  width: 100%;
+  height: 400px;
+}
+</style>
+
+
+<!-- <section class="login_part padding_top">
+  <div class="container">
+    <div class="col-lg-8 col-md-8">
+      <h3 class="mb-30">Add Address</h3>
+      <form action="/profile/add-address" method="post">
+        <% if (typeof alert != 'undefined') { %> <% alert.forEach(error => { %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <%= error.msg %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% }) %> <% } %>
+        <div class="mt-10">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Full name'"
+            class="single-input"
+          />
+        </div>
+        <div class="mt-10">
+          <input
+            type="number"
+            name="mob"
+            placeholder="Phone Number"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Phone Number'"
+            class="single-input"
+          />
+        </div>
+        <div class="mt-10">
+          <input
+            type="text"
+            name="house"
+            placeholder="House Number & Name"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'House Number & Name'"
+            class="single-input"
+          />
+        </div>
+        <div class="mt-10">
+          <input
+            type="text"
+            name="landmark"
+            placeholder="Landmark"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Landmark'"
+            class="single-input"
+          />
+        </div>
+        <div class="mt-10">
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'City'"
+            class="single-input"
+          />
+        </div>
+        <div class="input-group-icon mt-10">
+          <div class="icon"><i class="fa fa-plane" aria-hidden="true"></i></div>
+          <div class="form-select" id="default-select">
+            <select name="district">
+              <option value="none" selected disabled hidden>District</option>
+              <option value="Kozhikode">Kozhikode</option>
+              <option value="Malappuram">Malappuram</option>
+              <option value="Ernakulam">Ernakulam</option>
+              <option value="Kollam">Kollam</option>
+              <option value="Trivandrum">Trivandrum</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group-icon mt-10">
+          <div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+          <div class="form-select" id="default-select_1">
+            <select name="state">
+              <option value="none" selected disabled hidden>state</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Goa">Goa</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-10">
+          <input
+            type="text"
+            name="pincode"
+            placeholder="Pincode"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Pincode'"
+            class="single-input"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Submit Address</button>
+      </form>
+    </div>
+  </div>
+</section> -->
+<section class="login_part padding_top">
+  <div class="container">
+    <div id="address"></div>
+    <div id="map">
+      <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
+    </div>
+    <div id="getLocationBtn" class="btn btn-primary mb-5">Men turgan joy</div>
+    <form action="/profile/add-address" method="POST">
+      <input type="hidden" id="latitude" name="latitude" required>
+      <input type="hidden" id="longitude" name="longitude" required>
+      <button type="submit" class="btn btn-primary" id="mySubmit">Submit</button>
+    </form>
+  </div>
+</section>
+<script>
+  const key = 'pCFcOLHbkjMzUp1VFjc4';
+  const myLatitude = document.getElementById('latitude')
+  const myLongitude = document.getElementById('longitude')
+  const button = document.getElementById('mySubmit')
+  let myInput = document.querySelectorAll('#myForm input')
+
+  const map = L.map('map').setView([41.30853512680893, 69.24480915069581], 15); //starting position
+  L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${key}`,{ //style URL
+    tileSize: 512,
+    zoomOffset: -1,
+    minZoom: 1,
+    attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+    crossOrigin: true
+  }).addTo(map);
+  const marker = L.marker([41.3775, 64.5853]).addTo(map);
+
+  map.on('click', function(event) {
+    const { lat, lng } = event.latlng;
+    marker.setLatLng(event.latlng);
+    marker.addTo(map);
+    myLatitude.value = `${lat}`
+    myLongitude.value = `${lng}`
+  });
+  getLocationBtn.addEventListener('click', function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const { latitude, longitude } = position.coords;
+        map.setView([latitude, longitude], 15);
+        marker.setLatLng([latitude, longitude]);
+        marker.addTo(map);
+        // document.getElementById('address').value = `${latitude}, ${longitude}`;
+        myLatitude.value = `${latitude}`
+        myLongitude.value = `${longitude}`
+      }, function(error) {
+        window.alert('Manzil olishda xatolik yuz berdi');
+        // window.location.replace('profile/add-address')
+      });
+    } else {
+      console.error('Lokatsiya olish funksiyasi mavjud emas.');
+      window.alert('Sizda Lokatsiya olish funksiyasi mavjud emas.');
+    }
+  })
+
+</script>
+
+
+<%- include('partials/footer.ejs') %>

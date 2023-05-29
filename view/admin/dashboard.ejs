@@ -1,0 +1,357 @@
+<%- include('partials/header.ejs') %>
+
+<main class="h-full overflow-y-auto mb-8">
+  <div class="container px-6 mx-auto grid">
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Boshqaruv paneli</h2>
+    <!-- CTA -->
+
+    <!-- Cards -->
+    <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+      <!-- Card -->
+      <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Jami mijozlar</p>
+          <p class="text-lg font-semibold text-gray-700 dark:text-gray-200"><%= userCount %></p>
+        </div>
+      </div>
+      <!-- Card -->
+      <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Sotuvlar</p>
+          <% if (totalSales) { %>
+            <p class="text-lg font-semibold text-gray-700 dark:text-gray-200"> <%= totalSales.totalSales %> sum</p>
+          <% } %>
+           
+        </div>
+      </div>
+      <!-- Card -->
+      <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"
+            ></path>
+          </svg>
+        </div>
+        <% if (totalSales) { %>
+        <div>
+          <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Yangi Buyurtmalar</p>
+          <p class="text-lg font-semibold text-gray-700 dark:text-gray-200"><%= orderCount %></p>
+        </div>
+        <% } %>
+      </div>
+      <!-- Card -->
+      <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Yetkazilganlar</p>
+          <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+            <%= pendingOrders %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Grafikalar</h2>
+    <div class="grid gap-6 mb-8 md:grid-cols-2">
+      <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">Buyurtma holati</h4>
+        <canvas id="pie"></canvas>
+        <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+          <!-- Chart legend -->
+          <% categoryNameArray.forEach(element => { %>
+
+          <div class="flex items-center">
+            <span class="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full"></span>
+            <span><%= element %> </span>
+          </div>
+
+          <% }) %>
+        </div>
+      </div>
+      <!-- Bars chart -->
+      <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">Brend tahlili</h4>
+        <canvas id="bars"></canvas>
+        <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+        </div>
+      </div>
+    </div>
+    <button
+      onclick="salesDetails()"
+      @click="openModal"
+      class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+    >
+      Sotish hisoboti
+    </button>
+  </div>
+</main>
+
+<!-- End of modal backdrop -->
+<script>
+  function tableToCSV() {
+
+      // Variable to store the final csv data
+      var csv_data = [];
+
+      // Get each row data
+      var rows = document.querySelectorAll('#sales_table tr');
+      for (var i = 0; i < rows.length; i++) {
+
+          // Get each column data
+          var cols = rows[i].querySelectorAll('td,th');
+
+          // Stores each csv row data
+          var csvrow = [];
+          for (var j = 0; j < cols.length; j++) {
+
+              // Get the text data of each cell
+              // of a row and push it to csvrow
+              csvrow.push(cols[j].innerHTML);
+          }
+
+          // Combine each column value with comma
+          csv_data.push(csvrow.join(","));
+      }
+
+      // Combine each row data with new line character
+      csv_data = csv_data.join('\n');
+
+      // Call this function to download csv file 
+      downloadCSVFile(csv_data);
+
+  }
+
+  function downloadCSVFile(csv_data) {
+
+      // Create CSV file object and feed
+      // our csv_data into it
+      CSVFile = new Blob([csv_data], {
+          type: "text/csv"
+      });
+
+      // Create to temporary link to initiate
+      // download process
+      var temp_link = document.createElement('a');
+
+      // Download csv file
+      temp_link.download = "sales_data.csv";
+      var url = window.URL.createObjectURL(CSVFile);
+      temp_link.href = url;
+
+      // This link should not be displayed
+      temp_link.style.display = "none";
+      document.body.appendChild(temp_link);
+
+      // Automatically click the link to
+      // trigger download
+      temp_link.click();
+      document.body.removeChild(temp_link);
+  }
+</script>
+<script>
+  function reloadPage() {
+    location.reload();
+  }
+  function salesDetails() {
+    $.ajax({
+      url: '/admin/sales-report',
+      method: 'POST',
+    })
+      .then((response) => {
+        if (response.stat === 'success') {
+          const report = response.report;
+          let sales_report = `<div class="w-full overflow-x-auto mt-4">
+        <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">Sotish hisoboti</h4>
+        <table class="w-full whitespace-no-wrap" id="sales_table">
+          <thead>
+            <tr
+              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+            >
+              <th class="px-4 py-3">#</th>
+              <th class="px-4 py-3">Title</th>
+              <th class="px-4 py-3">Sold Qnty</th>
+              <th class="px-4 py-3">Stock</th>
+              <th class="px-4 py-3">Sales</th>
+            </tr>
+          </thead>
+          <tbody id="table_body13" class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">`;
+          $.each(report, function (index, value) {
+            /*console.log(value);*/
+            sales_report += '<tr class="text-gray-700 dark:text-gray-400">';
+            sales_report += '<td class="px-4 py-3 text-sm">' + (index + 1) + '</td>';
+            sales_report += '<td class="px-4 py-3 text-sm">' + value.stock[0].title + '</td>';
+            sales_report += '<td class="px-4 py-3 text-sm">' + value.sold + '</td>';
+            sales_report += '<td class="px-4 py-3 text-sm">' + value.stock[0].stock + '</td>';
+            sales_report += '<td class="px-4 py-3 text-sm">' + value.sales + '</td>';
+            sales_report += '</tr>';
+          });
+          sales_report += `</tbody>
+        </table>
+      </div>`;
+          $('#modal_body').empty().append(sales_report);
+          $('#close_modal').before(`<button
+          onclick="tableToCSV()"
+        class="w-full px-5 py-3 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+      >
+      Excel varag'i
+      </button>`);
+        } else {
+          let sales_report = `OOOps savdo hisoboti bilan ishlashda ba'zi muammolar`;
+          $('#modal_body').empty().append(sales_report);
+        }
+
+        $('#close_modal').click(() => {
+          reloadPage();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const nameArray = '<%= categoryNameArray %>';
+  const countArray = '<%= categoryCountArray %>';
+  const categoryName = nameArray.replace(/&#34;/gi, "'");
+  const categoryCount = countArray.replace(/&#34;/gi, "'");
+  const brandnameArray = '<%= brandNameArray %>';
+  const brandcountArray = '<%= brandCountArray %>';
+  const brandName = brandnameArray.replace(/&#34;/gi, "'");
+  const brandCount = brandcountArray.replace(/&#34;/gi, "'");
+  function orderDetails(id) {
+    $.ajax({
+      url: '/orders',
+      method: 'POST',
+      data: {
+        orderId: id,
+      },
+    }).then((response) => {
+      let order = response.order;
+      $('#order_status_select12').empty().append(order_option);
+      console.log(order);
+      let table_data = '';
+      $.each(order.products, function (index, value) {
+        /*console.log(value);*/
+        table_data += '<tr class="text-gray-700 dark:text-gray-400">';
+        table_data += '<td class="px-4 py-3 text-sm">' + (index + 1) + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">' + value.product.title + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">' + value.quantity + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">₹' + value.subtotal + '</td>';
+        table_data += '</tr>';
+      });
+      $('#table_body13').html(table_data);
+
+      if (order.orderstat === 'CONFIRMED') {
+        var order_option =
+          '<option value="CONFIRMED" selected disabled hidden>CONFIRMED</option><option value="SHIPPED">SHIPPED</option><option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCELLED">CANCEL</option>';
+      } else if (order.orderstat === 'SHIPPED') {
+        var order_option =
+          '<option value="SHIPPED" selected disabled hidden>SHIPPED</option><option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCEL">CANCELLED</option>';
+      } else if (order.orderstat === 'OUT FOR DELIVERY') {
+        var order_option =
+          '<option value="OUT FOR DELIVERY" selected disabled hidden>OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCELLED">CANCEL</option>';
+      } else if (order.orderstat === 'DELIVERED') {
+        var order_option = '<option value="DELIVERED" selected disabled hidden>DELIVERED</option>';
+      } else {
+        var order_option = '<option value="CANCELLED" selected disabled hidden>CANCELLED</option>';
+      }
+      $('#order_status_select12').empty().append(order_option);
+
+      $('#tracking_id').text(order._id);
+      $('#order_number').text(order.address._id);
+      $('#order_date').text(order.date);
+      $('#order_amount').text(order.total + 50);
+      $('#add_home').text(order.address.house);
+
+      $('#order_update12').on('click', () => {
+        updateOrderStatus(order._id, $('#order_status_select12 option:selected').val());
+      });
+    });
+  }
+
+  function updateOrderStatus(id, status) {
+    $.ajax({
+      url: '/admin/update-order',
+      method: 'POST',
+      data: {
+        orderId: id,
+        newOrderStatus: status,
+      },
+    }).then((response) => {
+      response.orderUpdate;
+      if (response.orderUpdate == 'success') {
+        successAlert();
+        setTimeout(() => {
+          location.reload(true);
+        }, 300);
+      } else {
+        failedAlert();
+        setTimeout(() => {
+          location.reload(true);
+        }, 300);
+      }
+    });
+  }
+  function successAlert() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Update Success',
+      text: 'You are good to go',
+    });
+  }
+  function failedAlert() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Yangilash amalga oshmadi',
+      text: ':)',
+    });
+  }
+</script>
+<% if (msg.length>0) { %>
+<script>
+  alertMsg('<%= msg %>');
+  function alertMsg(msg) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: msg,
+    });
+  }
+</script>
+<% } %> <%- include('partials/footer.ejs') %>

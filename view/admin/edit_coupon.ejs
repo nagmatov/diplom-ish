@@ -1,0 +1,88 @@
+<%- include('partials/header.ejs') %>
+
+<main class="h-full pb-16 overflow-y-auto">
+  <div class="container px-6 mt-8 mx-auto grid">
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <!-- General elements -->
+      <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Kuponni tahrirlash</h4>
+      <form action="/admin/coupon/edit-coupon/<%= couponId %> " method="post">
+        <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <label class="block text-sm mt-1">
+            <span class="text-gray-700 dark:text-gray-400">Kupon Kodi</span>
+            <input
+              name="code"
+              value="<%= coupon[0].code %>"
+              type="text"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400"> Chegirma turi </span>
+            <select
+              name="isPercent"
+              class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+              required
+            >
+              <option value="<%= coupon[0].isPercent %>" selected disabled hidden>Already selected option</option>
+
+              <option value="true">Foiz(%)</option>
+              <option value="false">Miqdori(sum)</option>
+            </select>
+          </label>
+          <label class="block text-sm mt-1">
+            <span class="text-gray-700 dark:text-gray-400"
+              >Miqdor (agar foiz bo'lsa, raqam ≤ 100 bo'lishi kerak, aks holda chegirma miqdori)</span
+            >
+            <input
+              name="amount"
+              value="<%= coupon[0].amount %>"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block text-sm mt-1">
+            <span class="text-gray-700 dark:text-gray-400">Minimal savat miqdori</span>
+            <input
+              name="minCartAmount"
+              value="<%= coupon[0].minCartAmount %>"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block text-sm mt-1">
+            <span class="text-gray-700 dark:text-gray-400">Foydalanish chegarasi</span>
+            <input
+              name="usageLimit"
+              value="<%= coupon[0].usageLimit %>"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block text-sm mt-1">
+            <span class="text-gray-700 dark:text-gray-400">Savatga maksimal chegirma</span>
+            <input
+              name="maxDiscountAmount"
+              value="<%= coupon[0].maxDiscountAmount %>"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="px-5 py-3 mt-8 w-full font-medium w-64 leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+          >
+          Kuponni tahrirlash
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer.ejs') %>

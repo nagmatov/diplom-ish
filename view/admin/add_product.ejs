@@ -1,0 +1,217 @@
+<%- include('partials/header.ejs') %>
+<main class="h-full pb-16 overflow-y-auto">
+  <div class="container px-6 mt-8 mx-auto grid">
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <!-- General elements -->
+      <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Mahsulot qo'shish</h4>
+      <form action="/admin/products/add-product" method="post" enctype="multipart/form-data">
+        <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Sarlavha</span>
+            <input
+              name="title"
+              type="text"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400"> Brand </span>
+            <select
+              name="brand"
+              class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+              required
+            >
+              <option value="none" selected disabled hidden>Variantni tanlang</option>
+              <% brand.forEach(el => { %>
+              <option value="<%= el._id %>"><%= el.title %></option>
+              <% }) %>
+
+              <!-- <option value="Wall Accent">Wall Accent</option>
+              <option value="Lighting">Lighting</option>
+              <option value="Garden & Outdoor">Garden & Outdoor</option>
+              <option value="Sofa & Recliners">Sofa & Recliners</option>
+              <option value="Storage">Storage</option>
+              <option value="Beds & Mattress">Beds & Mattress</option> -->
+            </select>
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400"> Katigorya </span>
+            <select
+              name="category"
+              class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+              required
+            >
+              <option value="none" selected disabled hidden>Variantni tanlang</option>
+              <% category.forEach(el => { %>
+              <option value="<%= el._id %>"><%= el.title %></option>
+              <% }) %>
+              <!-- <option value="Wall Accent">Wall Accent</option>
+              <option value="Lighting">Lighting</option>
+              <option value="Garden & Outdoor">Garden & Outdoor</option>
+              <option value="Sofa & Recliners">Sofa & Recliners</option>
+              <option value="Storage">Storage</option>
+              <option value="Beds & Mattress">Beds & Mattress</option> -->
+            </select>
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Birinchi ko'rinadigan rasim</span>
+            <input
+              type="file"
+              name="thumbnail"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Rasimlar</span>
+            <input
+              type="file"
+              name="images"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              multiple
+              required
+            />
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Narxi</span>
+            <input
+              name="price"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Kengligi</span>
+            <input
+              name="width"
+              type="number"
+              class="block w-full border-red-600 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Yon Kenglik</span>
+            <input
+              name="breadth"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Balandligi</span>
+            <input
+              name="height"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Kafolat</span>
+            <input
+              name="warranty"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Og'irligi</span>
+            <input
+              name="weight"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Material</span>
+            <input
+              name="material"
+              type="text"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+
+          <!-- <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">
+              Button right
+            </span>
+            <div
+              class="relative text-gray-500 focus-within:text-purple-600"
+            >
+              <input
+                class="block w-full pr-20 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                placeholder="Jane Doe"
+              />
+              <button
+                class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-r-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              >
+                Click
+              </button>
+            </div>
+          </label> -->
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Stock</span>
+            <input
+              name="stock"
+              type="number"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+            />
+          </label>
+          <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Tavsif</span>
+            <textarea
+              name="description"
+              class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+              rows="3"
+              placeholder="Tavsif"
+              required
+            ></textarea>
+          </label>
+
+          <button
+            type="submit"
+            class="px-5 py-3 mt-8 w-full font-medium w-64 leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+          >
+          Mahsulot qo'shish
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+<% if (msg.length>0) { %>
+<script>
+  alertMsg('<%= msg %>');
+  function alertMsg(msg) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'error',
+      title: msg,
+    });
+  }
+</script>
+<% } %> <%- include('partials/footer.ejs') %>

@@ -1,0 +1,133 @@
+<%- include('partials/header.ejs') %>
+
+<!-- breadcrumb start-->
+<!-- <section class="breadcrumb breadcrumb_bg">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Log In</h2>
+                            <p>Home <span>-</span> Log In</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+<!-- breadcrumb start-->
+
+<!--================login_part Area =================-->
+<section class="login_part padding_top">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 col-md-6">
+        <div class="login_part_text text-center">
+          <div class="login_part_text_iner">
+            <h2>Siz Bizning saytda Yangimisiz?</h2>
+            <p>Unda ro'yxatdan o'ting va xarit qilishni boshlang</p>
+            <a href="/signup" class="btn_3">Hisob Yaratish</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="login_part_form">
+          <div class="login_part_form_iner">
+            <h3>
+              Xush kilibsiz <br />
+              Iltimos hisobingizga kiring
+            </h3>
+            <form
+              class="row contact_form"
+              action="/signin"
+              method="post"
+              name="signupForm"
+              onsubmit="return validate() ;"
+            >
+              <% if (msg.length>0) { %>
+              <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+                <%= msg %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <% } %>
+              <div class="col-md-12 form-group p_star d-flex align-items-center">
+                <span>+998</span>
+                <input type="text" class="form-control" id="email" name="mob" value="" placeholder="Email" />
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input type="password" class="form-control" id="password" name="password" value="12345678" />
+                <span id="message" style="color: red"> </span>
+              </div>
+              <div class="col-md-12 form-group">
+                <!-- <div class="creat_account d-flex align-items-center">
+                                        <input type="checkbox" id="f-option" name="selector">
+                                        <label for="f-option">Remember me</label>
+                                    </div> -->
+                <button type="submit" value="submit" class="btn_3">Kirish</button>
+                <!-- <a class="lost_pass" href="/signin/otp-phone">Login by SMS otp Verification</a><br /> -->
+                <!-- <a class="lost_pass" href="/forgot-password">Parolni unutdingizmi?</a> -->
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  // Form validation code will come here.
+  function validate() {
+    let pw = document.getElementById('password').value;
+    if (pw == '') {
+      alert('Please enter the Password!');
+      document.signupForm.password.focus();
+      return false;
+    }
+    if (document.signupForm.email.value == '') {
+      alert('Please enter your email!');
+      document.signupForm.email.focus();
+      return false;
+    }
+    // if (pw.length < 8) {
+    //   document.getElementById('message').innerHTML = '**Password length must be atleast 8 characters';
+    //   document.signupForm.password.focus();
+    //   return false;
+    // }
+
+    // if (pw.length > 15) {
+    //   document.getElementById('message').innerHTML = '**Password length must not exceed 15 characters';
+    //   document.signupForm.password.focus();
+    //   return false;
+    // }
+
+    return true;
+  }
+</script>
+
+<!-- Sweetalert  -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<% if (loginCheck.length>0) { %>
+<script>
+  failedMsg('<%= loginCheck %>');
+  function failedMsg(mssg) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: false,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'error',
+      title: mssg,
+    });
+  }
+</script>
+<% } %> <%- include('partials/footer.ejs') %>

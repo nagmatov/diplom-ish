@@ -1,0 +1,303 @@
+<%- include('partials/header.ejs') %>
+
+<main class="h-full pb-16 overflow-y-auto">
+  <div class="container px-6 mx-auto grid">
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Buyurtmalar</h2>
+
+    <!-- Orders Table start -->
+    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+      <div class="w-full overflow-x-auto">
+        <table class="w-full whitespace-no-wrap">
+          <thead>
+            <tr
+              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+            >
+              <th class="px-4 py-3">Mijoz</th>
+              <th class="px-4 py-3">Miqdori</th>
+              <th class="px-4 py-3">Holat</th>
+              <th class="px-4 py-3">Vaqt</th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+            <% orders.forEach(el => { %>
+
+            <tr class="text-gray-700 dark:text-gray-400">
+              <td class="px-4 py-3">
+                <div class="flex items-center text-sm">
+                  <!-- Avatar with inset shadow -->
+                  <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+                    <img
+                      class="object-cover w-full h-full rounded-full"
+                      src="/user_img/<%= el.userId.image %>"
+                      alt=""
+                      loading="lazy"
+                    />
+                    <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                  </div>
+                  <div>
+                    <p class="font-semibold"><%= el.userId.fname %></p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400"><%= el.userId.lname %></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm"> <%= el.total+50000 %>.00sum</td>
+              <td class="px-4 py-3 text-xs">
+                <% if (el.orderstat=='DELIVERED') { %>
+
+                <span
+                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
+                >
+                Yetkazib berildi
+                </span>
+                <% } else if (el.orderstat=='OUT FOR DELIVERY') { %>
+                <span
+                  class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600"
+                >
+                Yetkazib berish uchun chiqdi
+                </span>
+                <% } else if (el.orderstat=='CONFIRMED') { %>
+                <span
+                  class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-700"
+                >
+                  Confirmed
+                </span>
+                <% } else if (el.orderstat=='SHIPPED') { %>
+                <span
+                  class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-700"
+                >
+                  Shipped
+                </span>
+                <% } else { %>
+                <span
+                  class="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full dark:text-gray-100 dark:bg-gray-700"
+                >
+                Bekor qilingan
+                </span>
+
+                <% } %>
+              </td>
+              <td class="px-4 py-3 text-sm"><%= el.date %></td>
+              <td class="px-4 py-3 text-sm">
+                <button
+                  onclick="orderDetails('<%= el._id %>')"
+                  @click="openModal"
+                  class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                >
+                Tafsilotlarni ko'rish
+                </button>
+              </td>
+            </tr>
+
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Modal backdrop. This what you want to place close to the closing body tag -->
+<div
+  x-show="isModalOpen"
+  x-transition:enter="transition ease-out duration-150"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-150"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed overflow-y-auto modal inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
+>
+  <!-- Modal -->
+  <div
+    x-show="isModalOpen"
+    x-transition:enter="transition ease-out duration-150"
+    x-transition:enter-start="opacity-0 transform translate-y-1/2"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0  transform translate-y-1/2"
+    @click.away="closeModal"
+    @keydown.escape="closeModal"
+    class="w-full px-6 py-4 overflow-y-auto bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 max-w-4xl"
+    role="dialog"
+  >
+    <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
+    <header class="flex justify-end">
+      <button
+        class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded dark:hover:text-gray-200 hover: hover:text-gray-700"
+        aria-label="close"
+        @click="closeModal"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" role="img" aria-hidden="true">
+          <path
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Modal body -->
+    <div class="mt-4 mb-6">
+      <!-- Order status change dropdown -->
+      <label class="block mt-4 text-sm">
+        <span class="text-gray-700 dark:text-gray-400"> Buyurtma holati</span>
+        <select
+          id="order_status_select12"
+          name="orderstat"
+          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+        >
+        </select>
+      </label>
+      <button
+        id="order_update12"
+        class="px-4 py-2 mt-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+      >
+      Buyurtma holatini yangilash
+      </button>
+
+      <!-- Order shipping address and order details cards -->
+      <div class="grid gap-6 mb-8 md:grid-cols-2 mt-4">
+        <div class="min-w-0 p-4 text-white rounded-lg shadow-xs dark:bg-gray-800">
+          <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">Buyurtma tafsilotlari</h4>
+          <p class="text-gray-600 dark:text-gray-400">
+            Id: <span class="font-semibold dark:text-gray-300" id="tracking_id"></span><br />
+            Buyurtma raqami: <span class="font-semibold dark:text-gray-300" id="order_number"></span><br />
+            Vaqt: <span class="font-semibold dark:text-gray-300" id="order_date"></span><br />
+            Miqdori: <span class="font-semibold dark:text-gray-300" id="order_amount"></span><br />
+          </p>
+        </div>
+        <div class="min-w-0 p-4 text-white rounded-lg shadow-xs dark:bg-gray-800">
+          <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">Yetkazib berish manzili</h4>
+          <p class="text-gray-600 dark:text-gray-400">
+            <iframe src="https://maps.google.com/maps?q=<%= orders[0].address.latitude %>,<%= orders[0].address.longitude %>&hl=en&z=12&amp;output=embed" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+          </p>
+        </div>
+      </div>
+
+      <!-- product details table -->
+      <div class="w-full overflow-x-auto mt-4">
+        <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">Mahsulot tafsilotlari</h4>
+        <table class="w-full whitespace-no-wrap">
+          <thead>
+            <tr
+              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+            >
+              <th class="px-4 py-3">#</th>
+              <th class="px-4 py-3">Sarlavha</th>
+              <th class="px-4 py-3">Miqdori</th>
+              <th class="px-4 py-3">Jami</th>
+            </tr>
+          </thead>
+          <tbody id="table_body13" class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer
+      class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800"
+    >
+      <button
+        @click="closeModal"
+        class="w-full px-5 py-3 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+      >
+        Yopish
+      </button>
+    </footer>
+  </div>
+</div>
+<!-- End of modal backdrop -->
+
+<script>
+  function orderDetails(id) {
+    $.ajax({
+      url: '/orders',
+      method: 'POST',
+      data: {
+        orderId: id,
+      },
+    }).then((response) => {
+      let order = response.order;
+      let table_data = '';
+      $.each(order.products, function (index, value) {
+        /*console.log(value);*/
+        table_data += '<tr class="text-gray-700 dark:text-gray-400">';
+        table_data += '<td class="px-4 py-3 text-sm">' + (index + 1) + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">' + value.product.title + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">' + value.quantity + '</td>';
+        table_data += '<td class="px-4 py-3 text-sm">' + (value.subtotal) + 'sum</td>';
+        table_data += '</tr>';
+      });
+      $('#table_body13').html(table_data);
+
+      if (order.orderstat === 'CONFIRMED') {
+        var order_option =
+          '<option value="CONFIRMED" selected disabled hidden>TASDIQLANGAN</option><option value="SHIPPED">SHIPPED</option><option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCELLED">CANCEL</option>';
+      } else if (order.orderstat === 'SHIPPED') {
+        var order_option =
+          '<option value="SHIPPED" selected disabled hidden>SHIPPED</option><option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCEL">CANCELLED</option>';
+      } else if (order.orderstat === 'OUT FOR DELIVERY') {
+        var order_option =
+          '<option value="OUT FOR DELIVERY" selected disabled hidden>OUT FOR DELIVERY</option><option value="DELIVERED">DELIVERED</option><option value="CANCELLED">CANCEL</option>';
+      } else if (order.orderstat === 'DELIVERED') {
+        var order_option = '<option value="DELIVERED" selected disabled hidden>DELIVERED</option>';
+      } else {
+        var order_option = '<option value="CANCELLED" selected disabled hidden>CANCELLED</option>';
+      }
+      $('#order_status_select12').empty().append(order_option);
+
+      $('#tracking_id').text(order._id);
+      $('#order_number').text(order.address._id);
+      $('#order_date').text(order.date);
+      $('#order_amount').text(order.total + 50000);
+      $('#order_update12').on('click', () => {
+        updateOrderStatus(order._id, $('#order_status_select12 option:selected').val());
+      });
+    });
+  }
+
+  function updateOrderStatus(id, status) {
+    $.ajax({
+      url: '/admin/update-order',
+      method: 'POST',
+      data: {
+        orderId: id,
+        newOrderStatus: status,
+      },
+    }).then((response) => {
+      response.orderUpdate;
+      if (response.orderUpdate == 'success') {
+        successAlert();
+        setTimeout(() => {
+          location.reload(true);
+        }, 300);
+      } else {
+        failedAlert();
+        setTimeout(() => {
+          location.reload(true);
+        }, 300);
+      }
+    });
+  }
+
+  function successAlert() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Muvaffaqiyatli yangilanish',
+      text: 'You are good to go',
+    });
+  }
+
+  function failedAlert() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Yangilash amalga oshmadi',
+      text: 'You  can try again later',
+    });
+  }
+</script>
+
+<%- include('partials/footer.ejs') %>

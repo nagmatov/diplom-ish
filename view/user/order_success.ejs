@@ -1,0 +1,100 @@
+<%- include('partials/header.ejs') %>
+
+<section class="confirmation_part padding_top">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="confirmation_tittle">
+          <span>Rahmat. Buyurtmangiz qabul qilindi.</span>
+        </div>
+      </div>
+      <div class="col-lg-6 col-lx-4">
+        <div class="single_confirmation_details">
+          <h4>buyurtma ma'lumotlari</h4>
+          <ul>
+            <li>
+              <p>buyurtma raqami</p>
+              <span>: <%= order._id.toString().slice(-10) %> </span>
+            </li>
+            <li>
+              <p>vaqt</p>
+              <span>: <%= order.date %></span>
+            </li>
+            <li>
+              <p>narx</p>
+              <span>: INR <%= order.total+50 %></span>
+            </li>
+            <li>
+              <p>to'lov usuli</p>
+              <span>: <%= order.payment %></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-lx-4">
+        <div class="single_confirmation_details">
+          <h4>to'lovni qabul qiladigan manzil</h4>
+          <iframe src="https://maps.google.com/maps?q=<%= order.address.latitude %>,<%= order.address.longitude %>&hl=en&z=12&amp;output=embed" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="order_details_iner">
+          <h3>Mahsulot tafsilotlari</h3>
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col" colspan="2">Mahsulot</th>
+                <th scope="col">Miqdori</th>
+                <th scope="col">Jami</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.products.forEach(el => { %>
+
+              <tr>
+                <th colspan="2"><span><%= el.product.title %> </span></th>
+                <th>x<%= el.quantity %></th>
+                <th><span> <%= el.subtotal %>sum</span></th>
+              </tr>
+
+              <% }) %>
+              <tr id="success_subtotal">
+                <th colspan="3">Oraliq jami</th>
+                <th><%= order.total %>.00sum</th>
+              </tr>
+              <tr>
+                <th colspan="3">Yetkazib berish</th>
+                <th>50.00ming sum</th>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr id="success_total">
+                <th scope="col" colspan="3"></th>
+                <th scope="col"><%= order.total+50000 %>.00sum</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if ('<%= discountAmt %>') {
+    if ('<%= isPercent %>' == 'true') {
+      $(`<tr><th colspan="3">Chegirma</th><th>-${'<%= discountAmt %>'}%(${'<%= Math.round(order.total*((discountAmt/100)))+50000 %>'<'<%= maxDiscountAmt %>'?'<%= Math.round(order.total*((discountAmt/100))) %>':'<%= maxDiscountAmt %>'})</th></tr>`).insertAfter(`#success_subtotal`);
+      $(`#success_total`).replaceWith(
+        `<tr id="success_total"><th scope="col" colspan="3"></th><th scope="col"> ${'<%= Math.round(order.total*(1-(discountAmt/100)))+50000 %>'<'<%= maxDiscountAmt %>'?'<%= Math.round(order.total*(1-(discountAmt/100)))+50000 %>':'<%= order.total-maxDiscountAmt+50000 %>'}.00</th></tr>`
+      );
+    } else {
+      $(`<tr><th colspan="3">Chegirma</th><th>-${'<%= discountAmt %>'}.00sum</th></tr>`).insertAfter(`#success_subtotal`);
+      $(`#success_total`).replaceWith(
+        `<tr id="success_total"><th scope="col" colspan="3"></th><th scope="col"> ${'<%= order.total+50000-discountAmt %>'}.00sum</th></tr>`
+      );
+    }
+  }
+</script>
+
+<%- include('partials/footer.ejs') %>

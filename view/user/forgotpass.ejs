@@ -1,0 +1,111 @@
+<%- include('partials/header.ejs') %>
+
+
+<!--================login_part Area =================-->
+<section class="login_part padding_top">
+  <div class="container h-100">
+    <div class="row align-items-center justify-content-center h-100">
+      <div class="col-12 col-md-6">
+        <div class="login_part_form m-auto">
+          <div class="login_part_form_iner ml-5">
+            <h3>
+              Parolni unutdingizmi
+            </h3>
+            <form class="row contact_form">
+              <div class="col-md-12 form-group p_star">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mob"
+                  name="mob"
+                  value=""
+                  placeholder="Telefon raqam"
+                />
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  value=""
+                  placeholder="Parol"
+                />
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password2"
+                  name="password2"
+                  value=""
+                  placeholder="Parolni qayta kiriting"
+                />
+              </div>
+              <div class="col-md-12 form-group">
+                <button type="button" id="forgot_pass" class="btn_3">Parolni yangilash</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================login_part end =================-->
+
+<script>
+
+
+$('#forgot_pass').click((e)=>{
+  e.preventDefault();
+  forgotPasswordValidation()
+})
+
+  function forgotPasswordValidation() {  
+  var pw1 = document.getElementById("password").value;  
+  var pw2 = document.getElementById("password2").value; 
+  var mob = document.getElementById("mob").value;  
+
+  if(mob == "") {  
+    //  document.getElementById("email").innerHTML = "**Fill the password please!";  
+     $("<p style='color:red'>Mobil number is required</p>").insertAfter("#mob");
+     return false;  
+  }  
+  if(pw1 == "") {  
+    //  document.getElementById("email").innerHTML = "**Fill the password please!";  
+     $("<p style='color:red'>please enter the password to be changed</p>").insertAfter("#password");
+     return false;  
+  }  
+  if(pw2 == "") {  
+    //  document.getElementById("email").innerHTML = "**Fill the password please!";  
+     $("<p style='color:red'>please confirm your password</p>").insertAfter("#password2");
+     return false;  
+  }  
+   
+  if(pw1 != pw2)  
+  {   
+    customAlert("Passwords did not match","error");  
+    return false;
+  }
+mobCheck(mob,pw1);
+}
+function mobCheck(email,password) {
+ $.ajax({
+  method: "post",
+  url: "/forgot-password",
+  data: {
+    mob,
+    password,
+  },
+}).then((response)=>{
+if(response.stat==='success'){
+  location.href='/signin';
+}else{
+  customAlert(response.msg,response.stat); 
+}
+});
+}
+</script>
+
+<%- include('partials/footer.ejs') %>
